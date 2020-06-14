@@ -14,9 +14,12 @@ client = discord.Client()
 ctxclient = Bot(description="My Cool Bot", command_prefix="!", pm_help = False, )
 
 def main():
-	#client.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
-	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
-	
+	# get token from file
+	# Make sure to have file with up-to-date token in it as token.txt
+	tokenFile = open('token.txt', 'r')
+	token = tokenFile.read()
+	tokenFile.close()
+	ctxclient.run(token)
 
 @ctxclient.event
 async def on_ready():
