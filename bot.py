@@ -15,19 +15,13 @@ ctxclient = Bot(description="My Cool Bot", command_prefix="!", pm_help = False, 
 
 def main():
 	#client.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
-	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWVNw.Wz_EC0ADlMK6io3B1gEbA99KQyE')
+	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWp1A.2WU6CRwVGjcb1J1REzhu9eYWOEs')
 
 @ctxclient.event
 async def on_ready():
 	print('We have logged in as {0.user}'.format(ctxclient))
 
-
-#TODO DELETE
-@ctxclient.command(pass_context=True)
-async def roles(ctx):
-	print (ctxclient.guilds[0].roles[::-1])
-
-
+#Returns true if the user is an admin
 def isAdmin(user):
 	#Get the roles for the server
 	roles = ctxclient.guilds[0].roles[::-1]
@@ -37,6 +31,10 @@ def isAdmin(user):
 		if (role.permissions.administrator and user in role.members):
 			return True
 	return False
+
+#Returns true if the role exists in the server
+def roleExists(role):
+    return any((x for x in ctxclient.guilds[0].roles if x.name == role))
 
 @ctxclient.command()
 async def whoami(ctx):
@@ -55,7 +53,7 @@ async def groupdel(ctx, group):
 	if not group.endswith('_'):
 		group += '_'
 	#Ensure that the user is an admin and the role does already exist
-	if isAdmin(ctx.message.author) and any((x for x in ctxclient.guilds[0].roles if x.name == group)):
+	if isAdmin(ctx.message.author) and roleExists(group):
 		#roleToDelete = await ctxclient.guilds[0].create_role(name=group)
 		for role in ctxclient.guilds[0].roles:
 			if role.name == group:
@@ -63,7 +61,7 @@ async def groupdel(ctx, group):
 				await ctx.message.channel.send('The role was deleted.')
 				return
 	else:
-		await ctx.message.channel.send('Either you\'re not an admin, or the group doesn\'t exist. I\'ll let you figure it out.. <:ryanhole:720781729387905052>'
+		await ctx.message.channel.send('Either you\'re not an admin, or the group doesn\'t exist. I\'ll let you figure it out.. <:ryanhole:720781729387905052>')
 
 @ctxclient.command(case_insensitive=True) #TODO this doesnt work???
 async def groupadd(ctx, group):
@@ -71,13 +69,26 @@ async def groupadd(ctx, group):
 	if not group.endswith('_'):
 		group += '_'
 	#Ensure that the user is an admin and the role does not already exist
-	if isAdmin(ctx.message.author) and not any((x for x in ctxclient.guilds[0].roles if x.name == group)):
+	if isAdmin(ctx.message.author) and not roleExists(group):
 		newrole = await ctxclient.guilds[0].create_role(name=group)
 		await ctx.message.channel.send('Created new role: ' + newrole.mention)
 	else:
 		await ctx.message.channel.send('You are not an admin or the group already exists!')
 
 
+@ctxclient.command()
+async def addmeto(ctx, group):
+	#Append underscore to bot roles
+	if not group.endswith('_'):
+		group += '_'
+
+	if not roleExists(group):
+		await ctx.message.channel.send('That role does not exist! Contact an admin to add it or check your spelling :P')
+	else:
+		#Get the actual role object
+		role = next((x for x in ctxclient.guilds[0].roles if x.name == group))
+		await ctx.message.author.add_roles(role)
+		await ctx.message.channel.send('You have been added to ' + group + '!')
 
 
 @client.event
