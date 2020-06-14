@@ -1,0 +1,4 @@
+#gitignore file
+
+token.txt
+*.pyc

@@ -15,7 +15,8 @@ ctxclient = Bot(description="My Cool Bot", command_prefix="!", pm_help = False, 
 
 def main():
 	#client.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
-	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWp1A.2WU6CRwVGjcb1J1REzhu9eYWOEs')
+	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
+	
 
 @ctxclient.event
 async def on_ready():
