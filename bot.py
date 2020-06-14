@@ -15,31 +15,53 @@ ctxclient = Bot(description="My Cool Bot", command_prefix="!", pm_help = False, 
 
 def main():
 	#client.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
-	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWBlg.DVu3KWLETvEQTpWabaz5NnkCE0Q')
+	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWVNw.Wz_EC0ADlMK6io3B1gEbA99KQyE')
 
 @ctxclient.event
 async def on_ready():
 	print('We have logged in as {0.user}'.format(ctxclient))
 
 
+#TODO DELETE
 @ctxclient.command(pass_context=True)
-async def whoami(ctx):
+async def roles(ctx):
+	print (ctxclient.guilds[0].roles[::-1])
+
+
+def isAdmin(user):
 	#Get the roles for the server
-	roles = ctxclient.guilds[0].roles
-	msg = "You're an average joe {0.author.mention}".format(ctx.message) 
+	roles = ctxclient.guilds[0].roles[::-1]
 
 	#Loop roles and check if the user is in that role and the role is an admin
 	for role in roles:
-		if (role.permissions.administrator and ctx.message.author in role.members):
-			msg = "You're an admin {0.author.mention}".format(ctx.message)  
-			break
+		if (role.permissions.administrator and user in role.members):
+			return True
+	return False
 
-	#await ctxclient.send_message(ctx.message.channel, msg)
+@ctxclient.command()
+async def whoami(ctx):
+	msg = "You're an average joe {0.author.mention}".format(ctx.message) 
+
+	if ctx.message.author.id == 257558209689026562:
+		msg = 'fuck off alexis <:alexislife:720780743642578975>'
+	elif isAdmin(ctx.message.author):
+		msg = "You're an admin {0.author.mention}".format(ctx.message)  
+
 	await ctx.message.channel.send(msg)
 
 
+@ctxclient.command(case_insensitive=True) #TODO this doesnt work???
+async def groupadd(ctx, group):
+	#Append underscore to bot roles
+	if not group.endswith('_'):
+		group += '_'
 
-
+	#Ensure that the user is an admin and the role does not already exist
+	if isAdmin(ctx.message.author) and not any((x for x in ctxclient.guilds[0].roles if x.name == group)):
+		newrole = await ctxclient.guilds[0].create_role(name=group)
+		await ctx.message.channel.send('Created new role: ' + newrole.mention)
+	else:
+		await ctx.message.channel.send('You are not an admin or the group already exists!')
 
 
 
