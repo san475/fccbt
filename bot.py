@@ -11,19 +11,38 @@ import ast
 
 #groupFile = open('groups.txt', 'r+')
 client = discord.Client()
-#ctxclient = Bot(description="My Cool Bot", command_prefix="!", pm_help = False, )
+ctxclient = Bot(description="My Cool Bot", command_prefix="!", pm_help = False, )
 
 def main():
-	client.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
+	#client.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
+	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWBlg.DVu3KWLETvEQTpWabaz5NnkCE0Q')
 
-#@ctxclient.command(pass_context=True)
-#async def whoami(ctx):
-	#if ctx.message.author.server_permissions.administrator:
-		#msg = "You're an admin {0.author.mention}".format(ctx.message)  
-		#await client.send_message(ctx.message.channel, msg)
-	#else:
-		#msg = "You're an average joe {0.author.mention}".format(ctx.message)  
-		#wait client.send_message(ctx.message.channel, msg)
+@ctxclient.event
+async def on_ready():
+	print('We have logged in as {0.user}'.format(ctxclient))
+
+
+@ctxclient.command(pass_context=True)
+async def whoami(ctx):
+	#Get the roles for the server
+	roles = ctxclient.guilds[0].roles
+	msg = "You're an average joe {0.author.mention}".format(ctx.message) 
+
+	#Loop roles and check if the user is in that role and the role is an admin
+	for role in roles:
+		if (role.permissions.administrator and ctx.message.author in role.members):
+			msg = "You're an admin {0.author.mention}".format(ctx.message)  
+			break
+
+	#await ctxclient.send_message(ctx.message.channel, msg)
+	await ctx.message.channel.send(msg)
+
+
+
+
+
+
+
 
 @client.event
 async def on_ready():
