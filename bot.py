@@ -49,13 +49,27 @@ async def whoami(ctx):
 
 	await ctx.message.channel.send(msg)
 
+@ctxclient.command(case_insensitive=True) #TODO this doesnt work???
+async def groupdel(ctx, group):
+	#Append underscore to bot roles
+	if not group.endswith('_'):
+		group += '_'
+	#Ensure that the user is an admin and the role does already exist
+	if isAdmin(ctx.message.author) and any((x for x in ctxclient.guilds[0].roles if x.name == group)):
+		#roleToDelete = await ctxclient.guilds[0].create_role(name=group)
+		for role in ctxclient.guilds[0].roles:
+			if role.name == group:
+				await role.delete()
+				await ctx.message.channel.send('The role was deleted.')
+				return
+	else:
+		await ctx.message.channel.send('Either you\'re not an admin, or the group doesn\'t exist. I\'ll let you figure it out.. <:ryanhole:720781729387905052>'
 
 @ctxclient.command(case_insensitive=True) #TODO this doesnt work???
 async def groupadd(ctx, group):
 	#Append underscore to bot roles
 	if not group.endswith('_'):
 		group += '_'
-
 	#Ensure that the user is an admin and the role does not already exist
 	if isAdmin(ctx.message.author) and not any((x for x in ctxclient.guilds[0].roles if x.name == group)):
 		newrole = await ctxclient.guilds[0].create_role(name=group)
