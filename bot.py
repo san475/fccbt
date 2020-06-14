@@ -15,11 +15,14 @@ ctxclient = Bot(description="My Cool Bot", command_prefix="!", pm_help = False, 
 
 def main():
 	#client.run('NzIwODQxNzY5ODA1MjgzMzYw.XuUZoA.dhPiRyEGzPPVB3BdRModJuxjTsQ')
-	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWVNw.Wz_EC0ADlMK6io3B1gEbA99KQyE')
+	ctxclient.run('NzIwODQxNzY5ODA1MjgzMzYw.XuWlaw.ElfxB7HCDj0tM5BNyZvDK7OXupw')
 
 @ctxclient.event
 async def on_ready():
 	print('We have logged in as {0.user}'.format(ctxclient))
+
+
+	print(next(x.name for x in ctxclient.guilds[0].roles if x != 3))
 
 
 #TODO DELETE
@@ -62,6 +65,31 @@ async def groupadd(ctx, group):
 		await ctx.message.channel.send('Created new role: ' + newrole.mention)
 	else:
 		await ctx.message.channel.send('You are not an admin or the group already exists!')
+
+
+
+
+
+
+
+
+
+@ctxclient.command()
+async def addmeto(ctx, group):
+	#Append underscore to bot roles
+	if not group.endswith('_'):
+		group += '_'
+
+
+	#print(next(x.name for x in ctxclient.guilds[0].roles if x = 3))
+
+	#if next((x for x in ctxclient.guilds[0].roles if x.name != group)):
+	#	await ctx.message.channel.send('That role does not exist! Contact an admin to add it or check your spelling :P')
+
+	#else:
+	#	await ctx.add_roles(ctx.message.author, group)
+
+	pass
 
 
 
