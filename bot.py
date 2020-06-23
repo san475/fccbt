@@ -30,6 +30,7 @@ def isAdmin(user):
 	#Get the roles for the server
 	roles = ctxclient.guilds[0].roles[::-1]
 
+
 	#Loop roles and check if the user is in that role and the role is an admin
 	for role in roles:
 		if (role.permissions.administrator and user in role.members):
@@ -38,14 +39,16 @@ def isAdmin(user):
 
 #Returns true if the role exists in the server
 def roleExists(role):
-    return any((x for x in ctxclient.guilds[0].roles if x.name == role))
+	return any((x for x in ctxclient.guilds[0].roles if x.name == role))
 
 @ctxclient.command()
 async def whoami(ctx):
 	msg = "You're an average joe {0.author.mention}".format(ctx.message) 
 
-	if ctx.message.author.id == 257558209689026562:
+	if ctx.message.author.id == 257558209689026562:  # Alexis
 		msg = 'fuck off alexis <:alexislife:720780743642578975>'
+	elif ctx.message.author.id == 377252714951737374:  # Myles
+		msg = 'Hey trash! <:jordanmoon:720783841584742501>'
 	elif isAdmin(ctx.message.author):
 		msg = "You're an admin {0.author.mention}".format(ctx.message)  
 
@@ -107,7 +110,7 @@ async def on_message(message):
 	#await message.edit(content=message.content + " :alexislife:")
 	#await message.channel.send('fuck you alexis')
 	#if str(message.author) == 'san475#3138':
-		#await message.channel.send("/tts The king has spoken")
+	#await message.channel.send("/tts The king has spoken")
 	#await message.edit(content=message.content + " :jordanmoon:")
 
 	## ANOTHER ONE TO REFACTOR
@@ -141,7 +144,7 @@ async def on_message(message):
 			groupDict = {}
 
 			if(string):
-# convert: string -> dictionary
+				# convert: string -> dictionary
 				groupDict = ast.literal_eval(string)
 			if group in groupDict:
 				await message.channel.send('That group already exists...')
@@ -166,7 +169,7 @@ async def on_message(message):
 		groupDict = {}
 
 		if(string):
-# convert: string -> dictionary
+			# convert: string -> dictionary
 			groupDict = ast.literal_eval(string)
 		if group not in groupDict:
 			await message.channel.send('That group doesn\'t exist, contact an admin! <@260568153254395907>')
